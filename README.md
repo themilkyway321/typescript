@@ -163,3 +163,88 @@ const c: []= [1,2,3,4]
 const d : boolean = true;
 c +d // 타입스크립트에 따라 오류 발생시킴 
 ````
+
+## typescript unknown
+
+```
+let a:unknown
+
+// a 가 unknown이면 아래처럼 한정지어줄 수 있어. 
+if(typeof a === 'number'){
+    let b = a + 1
+}
+if(typeof a === 'string'){
+    let b = a.toUpperCase()
+}
+
+let b = a + 1 //얘는 오류 발생, a를 한정짓지 않않으니까. 
+```
+
+## typescript void
+아무것도 return하지 않는 함수에서 반환 자료형
+```
+function hello() {
+    console.log('x')
+}
+```
+이때 function hello():void이지 
+
+## typescript  never
+
+값을 반환(return)하지 않는다. 
+
+이는 함수가 예외를 throw하거나 프로그램 실행을 종료함을 의미합니다.
+```
+function hello():never {
+    throw new Error("zzz")
+}
+```
+## Call Signatures
+
+함수 반환 타입이랑 함수 인자 타입을 알려주는 역할
+```
+type Add = (a:number, b:number) => number;
+const add:Add = (a,b) => a+b
+```
+
+add 라는 함수에 Add라고 타입을 알려줬으니까 오류없이 실행가능. 
+
+## Overloading
+
+Overloading은 직접 작성하기보다 외부 라이브러리에 자주 보이는 형태로, 하나의 함수가 복수의 Call Signature를 가질 때 발생한다
+
+```
+
+//제대로 된 오버로딩의 예시
+//
+type Config = {
+path: string,
+state: number
+}
+
+type Push = {
+(config: Config): void,
+(config: string): void
+}
+
+const push: Push = (config) => {
+if (typeof config === "string") console.log(config);
+else console.log(config.path);
+}
+```
+
+```
+//파라미터의 갯수가 달라도 된다
+type Add ={
+(a:number,b:number):number;
+(a:number,b:number,c:number):number;
+}
+//a , b만 return 하고 싶을 때 c까지 확인하고 싶을 때 다양하게 사용하면 된다.
+const add:Add=(a,b,c?:number)=>{
+if(c) return a+b+c;
+return a+b;
+}
+
+add(1,2)
+add(1,2,3)
+```
