@@ -248,3 +248,106 @@ return a+b;
 add(1,2)
 add(1,2,3)
 ```
+
+## Polymorphism
+
+- poly란?:many, serveral, much, multi 등과 같은 뜻
+- morphos란? :form, structure 등과 같은 뜻
+
+polymorphos = poly + morphos = 여러 다른 구조
+
+즉, 다형성이란, 여러 타입을 받아들임으로써 여러 형태를 가지는 것을 의미한다. 
+
+
+```
+type SuperPrint = {
+    (arr: number[]):void
+    (arr: boolean[]):void
+    (arr: string[]):void
+}
+//3개의 call signature을 사용하고 있음 
+
+const superPrint: SuperPrint = (arr) =>{
+    arr.forEach(i=>console.log(i))
+}
+
+superPrint([1,2,3,4])
+superPrint([true, false])
+superPrint([1,2,true, false]) //에러 발생 
+```
+type SuperPrint에 추가로 (arr: (number|boolean)[]):void 이렇게 call signature를 추가할 수 도 있지만, 경우의 수가 너무 많음
+
+<br><br>
+그래서 Generic 사용 
+
+<Generic이름>(형태):return할형태
+
+```
+type SuperPrint = {
+    <TypePlaceholder>(arr: TypePlaceholder[]):void
+    
+}
+const superPrint: SuperPrint = (arr) =>{
+    arr.forEach(i=>console.log(i))
+}
+
+superPrint([1,2,3,4])
+superPrint([true, false])
+superPrint([1,2,true, false]) //이렇게 해도 오류 발생하지 않음 
+```
+
+TypePlaceholder는 배열 형태를 받고, TypePlaceholder 배열로 반환한다. 
+```
+type SuperPrint = {
+    <TypePlaceholder>(arr: TypePlaceholder[]):TypePlaceholder
+    
+}
+const superPrint: SuperPrint = (arr) => arr[0]
+
+
+const a = superPrint([1,2,3,4])
+const b = superPrint([true, false])
+const c =superPrint([1,2,true, false])
+```
+
+
+그렇다면 그냥 any를 넣는 것과 Generic의 차이는 무엇일까?
+```
+type SuperPrint = {
+(arr: any[]): any
+}
+
+const superPrint: SuperPrint = (arr) => arr[0]
+
+let a = superPrint([1, "b", true]);
+// pass
+a.toUpperCase();
+```
+any를 사용하면 위와 같은 경우에도 에러가 발생하지 않는다
+
+```
+type SuperPrint = {
+(arr: T[]): T
+}
+
+const superPrint: SuperPrint = (arr) => arr[0]
+
+let a = superPrint([1, "b", true]);
+// error
+a.toUpperCase();
+```
+Generic의 경우 에러가 발생해 보호받을 수 있다
+* Call Signature를 concrete type으로 하나씩 추가하는 형태이기 때문!
+<br><br>
+
+복수의 Generic을 선언해 사용할 수 있다
+```
+type SuperPrint = {
+(arr: T[], x: M): T
+}
+
+const superPrint: SuperPrint = (arr, x) => arr[0]
+
+let a = superPrint([1, "b", true], "hi");
+
+```
