@@ -351,3 +351,297 @@ const superPrint: SuperPrint = (arr, x) => arr[0]
 let a = superPrint([1, "b", true], "hi");
 
 ```
+
+## 정리 
+
+아래 1번코드와 2번코드는 같은 코드! 
+
+
+1번코드
+```
+type SuperPrint = <T>(a: T[]) => T
+const Player: SuperPrint = (a) => a[0]
+```
+2번코드
+```
+function Player<T>(a:T[]){
+    return a[0]
+}
+```
+
+```
+//타입을 구체적으로 명시해주고 싶을 때는 <number>이런식으로 써줘도 된다. 하지만, 그냥 추론하도록 하는 것이 좋은 방법 Player([1,2,3,4])가 주어지고 타입스크립트가 숫자 배열임을 추론하도록 하는 것이 좋다. 
+
+const a = Player<number>([1,2,3,4])
+const a = Player([1,2,3,4]) //같은 표현
+```
+
+아래 3~5번코드는 다 같은 코드 제네릭 코드를 확장할 수 있다는 것을 보여주는 예시
+
+
+3번코드
+```
+type Player<E> = {
+    name:string
+    extraInfo:E
+}
+
+const nico:Player<{favFood:string}> = {
+    name:"nico",
+    extraInfo: {
+        favFood:"kimchi"
+    }
+}
+```
+
+4번코드
+```
+type Player<E> = {
+    name:string
+    extraInfo:E
+}
+
+type NicoPlayer =Player<{favFood:string}>
+
+const nico:NicoPlayer = {
+    name:"nico",
+    extraInfo: {
+        favFood:"kimchi"
+    }
+}
+```
+
+
+5번코드
+```
+type Player<E> = {
+    name:string
+    extraInfo:E
+}
+
+type NicoExtra = {
+    favFood:string
+}
+type NicoPlayer =Player<NicoExtra>
+
+const nico:NicoPlayer = {
+    name:"nico",
+    extraInfo: {
+        favFood:"kimchi"
+    }
+}
+
+
+```
+
+
+```
+5번코드에서 이렇게 추가로 함수를 실행할 수도 있따. 
+const lynn: Player<null> ={
+    name:"lynn",
+    extraInfo:null
+}
+````
+
+
+```
+type A = Array<number> //이렇게도 쓸 수 있다. 
+
+let a:A =[1,2,3,4];
+
+
+// function printAllNumbers(arr: number[]){}
+function printAllNumbers(arr: Array<number>){}
+
+```
+
+
+## classes and interfaces
+
+타입스크립트의 클래스(Class)
+- constructor의 매개변수를 지정해주면 this.firstName = firstName 같은 자바스크립트 코드로 자동 변환해준다.
+- private 키워드: 클래스 바깥에서 프로퍼티나 메서드에 접근할 수 없게 하는 키워드. 상속받은 클래스에서도 접근할 수 없다.(자바스크립트에서는 작동x)
+```
+class Player {
+    constructor (
+        private firstName:string,
+        private lastName:string,
+        public nickname:string
+    ) {}
+}
+
+const nico = new Player("nico", "last", "니꼬")
+
+nico.firstName //에러 발생 
+```
+<br>
+<br>
+- 추상 클래스: 다른 클래스가 상속 받을 수는 있지만 새로운 인스턴스는 만들 수 없는 클래스
+
+```
+abstract class User {
+     constructor (
+        private firstName:string,
+        private lastName:string,
+        public nickname:string
+    ) {}
+}
+
+
+class Player extends User {
+   
+}
+
+const nico = new Player("nico", "last", "니꼬")
+
+const nico = new User("nico", "last", "니꼬") //에러 발생 abstract는 새로운 인스턴스를 생성할수 없기 때문
+```
+<br><br>
+- 추상 메서드: 추상 클래스 안에 만들 수 있는 메서드. 추상 클래스를 상속 받는 모든 것들이 구현 해야하는 메서드를 의미한다. 메서드를 구현해서는 안되고 call signature만 작성해야한다.
+
+
+```
+abstract class User {
+     constructor (
+        private firstName:string,
+        private lastName:string,
+        public nickname:string
+    ) {}
+    abstract getNickName():void
+    getFullName(){
+        return `${this.firstName} ${this.lastName}`
+    }
+}
+
+
+class Player extends User {
+   getNickName(){
+    console.log(this.nickname) 
+    console.log(this.lastName)// private이기때문에 에러 발생 
+   }
+}
+
+const nico = new Player("nico", "last", "니꼬")
+nico.getFullName();
+```
+<br><br>
+- protected 클래스: 해당 클래스와 자식 클래스에서 접근 가능
+```
+abstract class User {
+     constructor (
+        protected firstName:string,
+        protected lastName:string,
+        protected nickname:string
+    ) {}
+    abstract getNickName():void
+    getFullName(){
+        return `${this.firstName} ${this.lastName}`
+    }
+}
+
+
+class Player extends User {
+   getNickName(){
+    console.log(this.nickname) 
+    console.log(this.lastName)// protected이기때문에 에러 발생 안 시킴. 
+   }
+}
+
+
+
+const nico = new Player("nico", "last", "니꼬")
+nico.getFullName();
+nico.firstName //protected이기때문에 에러 발생 
+
+```
+
+구분　　　선언한 클래스 안　상속받은 클래스 안　인스턴스<br>
+private 　 　　　⭕　　　　　　　❌　　　　　      ❌<br>
+protected 　　　⭕　　　　　　　⭕　　　　      　 ❌<br>
+public　　　　　⭕　　　　　　　⭕　　　　　       ⭕<br>
+
+
+```
+type Words = {
+    [key:string]:string
+}
+//이런식으로 타입을 지정할 수 있음. key가 올자리에는 string이고 :뒤에는 string이 온다고
+
+// let dict :Words = {
+//     "potato":"food"
+// }
+
+class Dict {
+  private words: Words
+  constructor(){
+    this.words = {}
+  }
+
+
+  add(word:Word){
+    if(this.words[word.term] === undefined){
+        this.words[word.term] = word.def
+    }
+  }
+  def(term:string){
+    return this.words[term]
+  }
+}
+
+class Word {
+    constructor(
+        public term:string,
+        public def:string
+    ) {}
+}
+const kimchi = new Word("kimchi","한국의 음식")
+
+const dict = new Dict()
+dict.add(kimchi)
+dict.def("kimchi")
+```
+
+
+
+```
+type Words = {
+    [key:string]:string
+}
+//이런식으로 타입을 지정할 수 있음. key가 올자리에는 string이고 :뒤에는 string이 온다고
+
+// let dict :Words = {
+//     "potato":"food"
+// }
+
+class Dict {
+    //private 클래스를 주고, 이를 constructor안에 설정해줘야해. 
+  private words: Words
+  constructor(){
+    this.words = {}
+  }
+
+    // add가 받는 인자는 Word 타입이다. class를 타입처럼 사용할 수 있다. 
+  add(word:Word){
+    if(this.words[word.term] === undefined){
+        this.words[word.term] = word.def
+    }
+  }
+  
+  def(term:string){
+    return this.words[term]
+  }
+}
+
+class Word {
+    constructor(
+        public term:string,
+        public def:string
+    ) {}
+}
+const kimchi = new Word("kimchi","한국의 음식")
+
+const dict = new Dict()
+dict.add(kimchi)
+console.log(kimchi)
+
+```
