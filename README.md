@@ -645,3 +645,190 @@ dict.add(kimchi)
 console.log(kimchi)
 
 ```
+
+## 타입의 여러가지 형태
+
+```
+//타입을 여러가지 방면으로 자유롭게 변형할 수 있어
+
+//첫번째 유형 
+
+// type Player = {
+//     nickname:string,
+//     healthBar:number
+// }
+// const Miri: Player = {
+//     nickname:"Milky",
+//     healthBar:10
+// }
+
+// 두번째 유형
+
+type Nickname = string
+type Health = number
+type Player = {
+    nickname:Nickname,
+    healthBar:Health
+}
+
+const Miri: Player = {
+    nickname:"Milky",
+    healthBar:10
+}
+
+// 세번째 유형 
+
+type Food = string;
+const kimchi:Food = "delicicious"
+
+type Friends = Array<string>
+
+
+
+//네번째 유형 
+
+type Team = "read" | "blue" | "yellow"
+type Player= {
+    nickname:string, 
+    team:Team
+}
+const miri:Player = {
+    nickname:"Milky",
+    team:"blue",
+    <!-- team:"pink" 에러! -->
+}
+```
+
+## interface
+
+interface는 오로지 객체의 형태를 타입스크립트에게 설명해주기 위한 용도로만 사용된다. 타입이랑 비슷하지만, 인터페이스는 객체형태로만 쓸 수 있다는 점이 차이점. 
+
+```
+interface Player {
+    nickname:string, 
+    team:Team
+}
+```
+
+
+1번코드
+```
+interface User {
+    name:string
+}
+
+interface Player extends User {
+
+}
+const miri : Player = {
+    name:"miri"
+}
+```
+
+
+1번 코드를 type형태로 쓴다면
+```
+type User = {
+    name:string
+}
+
+type Player = User & {
+
+}
+const miri : Player = {
+    name:"miri"
+}
+
+```
+
+인터페이스의 또 다른 특징으로는 속성(Property)들을 ‘축적’시킬 수 있다는 것이다.
+
+```
+interface User {
+    name:string
+}
+
+interface User {
+    lastName:string
+}
+```
+
+
+abstract를 사용하여 타입을 명시한 코드 
+```
+abstract class User {
+    constructor(
+        protected firstName:string,
+        protected lastName:string
+    ){}
+    abstract sayHi(name:string):string
+    abstract fullName():string
+}
+
+class Player extends User {
+    fullName(){
+        return `${this.firstName} ${this.lastName}` 
+    }
+    sayHi(name:string){
+        return `Hello ${name}. My name is ${this.fullName}`
+    }
+}
+```
+
+interface를 사용하여 타입을 명시한 코드 
+:interfacd를 자바스크립트로 컴파일하지 않기때문에, 훨씬 코드가 가벼워지는 장점이 있다. 
+
+```
+interface User {
+    firstName:string,
+    lastName:string,
+    sayHi(name:string):string
+    fullName():string
+}
+interface Human {
+    health:number
+}
+class Player implements User, Human {
+   constructor(
+        public firstName:string,
+        public lastName:string,
+        public health:number
+   ){}
+    fullName(){
+        return `${this.firstName} ${this.lastName}` 
+    }
+    sayHi(name:string){
+        return `Hello ${name}. My name is ${this.fullName}`
+    }
+}
+```
+
+
+
+```
+interface SStorage<T> {
+    [key:string]: T
+}
+
+class LocalStroage<T> {
+    private storage: SStorage<T> ={}
+    set(key:string, value:T){
+        this.storage[key] = value;
+    }
+    remove(key:string){}
+    get(key:string):T{
+        return this.storage[key]
+    }
+    clear(){
+        this.storage = {}
+    }
+ }
+
+ const stringsStroage = new LocalStroage<string>()
+
+ stringsStroage.get("miri")
+
+ const booleanStorage = new LocalStroage<boolean>()
+
+ booleanStorage.get("xxx")
+ ```
