@@ -71,7 +71,8 @@ const second : Player = {
 }
 ```
 
-함수에서는 어떻게 타입을 지정해줄까?
+함수의 return 타입을 정해주는 방법 
+문자형식은 name을 인자고 받고 Player타입 형태로 return
 ```
 type Player = {
     name: string,
@@ -83,7 +84,7 @@ function playerMaker1(name:string) : Player {
         name
     }
 }
-// 혹은 아래 형태로
+// 혹은 화살표 함수 문법 형식을 쓴다면 아래와 같이 타입 지정. 
 const playerMaker2 = (name:string) : Player => ({name})
 ```
 
