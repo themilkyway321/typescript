@@ -45,7 +45,7 @@ b = 1
 } = {
     name: "Miri"
 }
-
+```
 //player.age 를 해주는 이유는, 값을 존재했을 때, 비교를 해야 오류 발생 안 시킴. player.age>10만 주면, 오류 발생시킴 (age가 optional 이므로)
 ```
 if(player.age && player.age>10){
