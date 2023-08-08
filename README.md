@@ -71,7 +71,7 @@ const second : Player = {
 }
 ```
 
-
+함수에서는 어떻게 타입을 지정해줄까?
 ```
 type Player = {
     name: string,
