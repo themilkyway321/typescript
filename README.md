@@ -128,6 +128,12 @@ const nico = playerMaker("noco");
 nico.name ="" // nico의 이름을 수정하려는 순간 에러 발생시킴 
 ```
 
+
+```
+const numbers: readonly number[] = [1, 2, 3, 4]
+numbers.push(1) // 오류 발생시킴. 수정할 수 없으므로 
+```
+
 ## typescript: Tuple
 
 정해진 개수와 순서에 따라 배열 선언
@@ -135,6 +141,8 @@ nico.name ="" // nico의 이름을 수정하려는 순간 에러 발생시킴
 하지만 자바스크립트에서는 Tuple인식 못함 단순히 배열로 인식 ["nico", 1, true]
 ```
 const player: [string, number, boolean] = ["nico", 1, true]
+
+player[0] =1 //오류! 왜? 문자여야 하니까. 
 ```
 
  readonly도 사용가능
