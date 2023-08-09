@@ -434,14 +434,15 @@ const nico:Player<{favFood:string}>={
     }
 }
 ```
+
 <br>
 generic 타입으로 extraInfo의 형태가 null 인 코드 
+
 ```
 type Player<F> = {
     name:string
     extraInfo:F
 }
-
 
 const miri:Player<null>={
     name:"miri",
