@@ -413,73 +413,70 @@ const a = Player<number>([1,2,3,4])
 const a = Player([1,2,3,4]) //같은 표현
 ```
 
-아래 3~5번코드는 다 같은 코드 제네릭 코드를 확장할 수 있다는 것을 보여주는 예시
+또한 generic type은 다음과 같이도 쓸 수 있다. 여러 형태로 활용할 수 있다.  
 
 
-3번코드
+활용 1
+
+Player 은 name과 extraInfo 두가지 인자를 갖는 함수인데, extraInfo가 함수의 형태일수도 있고, null 일 수도 있고 string 일 수도 있을 때 generic 타입으로 줄 수 있음. 
+<br>
+generic 타입으로 extraInfo가 함수형태인 코드 
 ```
-type Player<E> = {
+type Player<F> = {
     name:string
-    extraInfo:E
+    extraInfo:F
 }
 
-const nico:Player<{favFood:string}> = {
+const nico:Player<{favFood:string}>={
     name:"nico",
-    extraInfo: {
+    extraInfo:{
         favFood:"kimchi"
     }
 }
 ```
-
-4번코드
+<br>
+generic 타입으로 extraInfo의 형태가 null 인 코드 
 ```
-type Player<E> = {
+type Player<F> = {
     name:string
-    extraInfo:E
+    extraInfo:F
 }
 
-type NicoPlayer =Player<{favFood:string}>
 
-const nico:NicoPlayer = {
-    name:"nico",
-    extraInfo: {
-        favFood:"kimchi"
-    }
+const miri:Player<null>={
+    name:"miri",
+    extraInfo:null
 }
 ```
 
 
-5번코드
+
+활용 2
 ```
-type Player<E> = {
+type Player<F> = {
     name:string
-    extraInfo:E
+    extraInfo:F
 }
 
 type NicoExtra = {
     favFood:string
 }
-type NicoPlayer =Player<NicoExtra>
 
-const nico:NicoPlayer = {
+type NicoPlayer = Player<NicoExtra>
+
+const nico:NicoPlayer={
     name:"nico",
-    extraInfo: {
+    extraInfo:{
         favFood:"kimchi"
     }
 }
 
-
 ```
 
 
-```
-5번코드에서 이렇게 추가로 함수를 실행할 수도 있따. 
-const lynn: Player<null> ={
-    name:"lynn",
-    extraInfo:null
-}
-````
 
+활용 3
+number[]대신 generic 타입을 쓴다면 Array<number>로 대신 쓸 수 있다. 
 
 ```
 type A = Array<number> //이렇게도 쓸 수 있다. 
