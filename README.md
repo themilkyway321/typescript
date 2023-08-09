@@ -234,6 +234,17 @@ add 라는 함수에 Add라고 타입을 알려줬으니까 오류없이 실행�
 
 Overloading은 직접 작성하기보다 외부 라이브러리에 자주 보이는 형태로, 하나의 함수가 복수의 Call Signature를 가질 때 발생한다
 
+예를 들어, Next.js의 라우터 push가 대충 두 가지 방법으로 페이지를 이동한다고 할 때, 다음과 같은 코드를 작성하게 된다. 
+```
+router.push("/home");
+
+router.push({
+path: "/home",
+state: 1
+});
+```
+
+이때, 패키지나 라이브러리는 아래와 같이 두 가지 경우의 Overloading으로 디자인되어 있을 것이다
 ```
 
 //제대로 된 오버로딩의 예시
@@ -297,9 +308,14 @@ superPrint([true, false])
 superPrint([1,2,true, false]) //에러 발생 
 ```
 type SuperPrint에 추가로 (arr: (number|boolean)[]):void 이렇게 call signature를 추가할 수 도 있지만, 경우의 수가 너무 많음
+즉 위과 같이 concrete type대신 Generic 사용 
 
+concrete type
+- number, boolean, void 등 지금까지 배운 타입
+
+generic type
+- 타입을 보고 유추하라고 하는 것 즉 [1,2,3,4]의 배열이 있다면 아 number라고 타입스크립트가 인식하는 것. 
 <br><br>
-그래서 Generic 사용 
 
 <Generic이름>(형태):return할형태
 
@@ -314,10 +330,10 @@ const superPrint: SuperPrint = (arr) =>{
 
 superPrint([1,2,3,4])
 superPrint([true, false])
-superPrint([1,2,true, false]) //이렇게 해도 오류 발생하지 않음 
+superPrint([1,2,true, false]) //이렇게 해도 오류 발생하지 않음  <TypePlaceholder>라는 generic 형태로 타입을 유추할 수 있기 때문. 
 ```
 
-TypePlaceholder는 배열 형태를 받고, TypePlaceholder 배열로 반환한다. 
+TypePlaceholder는 배열 형태를 받고, arr[0] 의 결과를 반환해야 하기 때문에 :void 대신 :TypePlaceholder 를 주었다.  
 ```
 type SuperPrint = {
     <TypePlaceholder>(arr: TypePlaceholder[]):TypePlaceholder
