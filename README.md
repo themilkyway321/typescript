@@ -307,8 +307,8 @@ superPrint([1,2,3,4])
 superPrint([true, false])
 superPrint([1,2,true, false]) //에러 발생 
 ```
-type SuperPrint에 추가로 (arr: (number|boolean)[]):void 이렇게 call signature를 추가할 수 도 있지만, 경우의 수가 너무 많음
-즉 위과 같이 concrete type대신 Generic 사용 
+type SuperPrint에 추가로 (arr: (number|boolean)[]):void 이렇게 call signature를 추가할 수 도 있지만, 경우의 수가 너무 많음.<br>
+따라서, 위과 같이 concrete type대신 Generic 사용 
 
 concrete type
 - number, boolean, void 등 지금까지 배운 타입
