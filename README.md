@@ -776,7 +776,7 @@ const miri : Player = {
 
 ```
 
-인터페이스의 또 다른 특징으로는 속성(Property)들을 ‘축적’시킬 수 있다는 것이다.
+인터페이스의 또 다른 특징으로는 속성(Property)들을 ‘축적’시킬 수 있다는 것이다. type형태는 이렇게 축적 못함!
 
 ```
 interface User {
@@ -786,10 +786,20 @@ interface User {
 interface User {
     lastName:string
 }
-```
+const miri : User = {
+    name:"miri",
+    lastName:"Kim"
+}
 
+```
+<h3>그렇다면 왜 interface를 쓰는게 유용한 것일까? </h3>
+아래 코드를 비교해보자. 
+<br>
 
 abstract를 사용하여 타입을 명시한 코드 
+abstract를 사용하여 어떤 property와 메서드를 가질지 청사진을 제시해줄 수 있어. 실제로 자바스크립트에는 abstract 대신 그냥 class User로만 나타나지. 
+하지만 우리는 알아, User로 인스턴스로 만들 수 없어. Player로만 인스턴스를 만들 수있지 (abstract의 특징.) 
+결과적으로 자바스크립트에는 class User와 class Player의 코드가 존재하지만 Player만 가지고 인스턴스들을 만들게 된다. 
 ```
 abstract class User {
     constructor(
@@ -809,9 +819,10 @@ class Player extends User {
     }
 }
 ```
-
+<br>
 interface를 사용하여 타입을 명시한 코드 
-:interfacd를 자바스크립트로 컴파일하지 않기때문에, 훨씬 코드가 가벼워지는 장점이 있다. 
+
+:interface를 자바스크립트로 컴파일하지 않기때문에, 훨씬 코드가 가벼워지는 장점이 있다. 
 
 ```
 interface User {
