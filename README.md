@@ -853,6 +853,7 @@ class Player implements User, Human {
     }
 }
 ```
+
 인터페이스를 상속(implements )하는 것의 문제점 중 하나는 private혹은 protected 프로퍼티들을 사용하지 못한 다는 것 
 <br><br>
 
