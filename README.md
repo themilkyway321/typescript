@@ -493,6 +493,10 @@ function printAllNumbers(arr: Array<number>){}
 
 ## classes and interfaces
 
+타입스크립트를 활용하여 클래스를 선언하는 방식은 다음과 같다. 
+단적으로 타입스크립트를 쓰면 좋은 이유는 private 을 주면 데이터에 접근을 못하도록 설정할 수 있다.
+
+
 타입스크립트의 클래스(Class)
 - constructor의 매개변수를 지정해주면 this.firstName = firstName 같은 자바스크립트 코드로 자동 변환해준다.
 - private 키워드: 클래스 바깥에서 프로퍼티나 메서드에 접근할 수 없게 하는 키워드. 상속받은 클래스에서도 접근할 수 없다.(자바스크립트에서는 작동x)
@@ -792,7 +796,8 @@ const miri : User = {
 }
 
 ```
-<h3>그렇다면 왜 interface를 쓰는게 유용한 것일까? </h3>
+<h4>그렇다면 왜 interface를 쓰는게 유용한 것일까? </h4>
+https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces
 아래 코드를 비교해보자. 
 <br>
 
@@ -848,8 +853,12 @@ class Player implements User, Human {
     }
 }
 ```
+인터페이스를 상속(implements )하는 것의 문제점 중 하나는 private혹은 protected 프로퍼티들을 사용하지 못한 다는 것 
+<br><br>
 
+이제까지 배운 것을 토대로 아래 예시를 살펴보자 
 
+로컬스토리지 API 예시
 
 ```
 interface SStorage<T> {
@@ -861,7 +870,9 @@ class LocalStroage<T> {
     set(key:string, value:T){
         this.storage[key] = value;
     }
-    remove(key:string){}
+    remove(key:string){
+      delete this.storage[key]
+      }
     get(key:string):T{
         return this.storage[key]
     }
@@ -872,9 +883,11 @@ class LocalStroage<T> {
 
  const stringsStroage = new LocalStroage<string>()
 
+//miri를 보내주고 결과로 string으로 받는다. 제네릭 형태로 get(key:string):T 이렇게 썼으므로. 
  stringsStroage.get("miri")
 
  const booleanStorage = new LocalStroage<boolean>()
 
+//xxx를 보내주고 결과로 boolean으로 받는다. 제네릭 형태로 get(key:string):T 이렇게 썼으므로. 
  booleanStorage.get("xxx")
  ```
