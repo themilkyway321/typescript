@@ -892,3 +892,78 @@ class LocalStroage<T> {
 //xxx를 보내주고 결과로 boolean으로 받는다. 제네릭 형태로 get(key:string):T 이렇게 썼으므로. 
  booleanStorage.get("xxx")
  ```
+
+
+## typescript설치
+npm i -D typescript
+
+package.json 초기화
+npm init -y
+
+## tsconfig.json설정
+디렉터리에 tsconfig.json 파일이 있으면 해당 디렉터리가 TypeScript 프로젝트의 루트임을 나타냅니다. tsconfig.json 파일은 프로젝트를 컴파일하는 데 필요한 루트 파일과 컴파일러 옵션을 지정합니다.
+https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#handbook-content
+
+- Target (기본값: ES3)
+최신 브라우저는 모든 ES6 기능을 지원하므로 ES6는 좋은 선택입니다. 코드가 이전 환경에 배포된 경우 더 낮은 target을 설정하거나 최신 환경에서 코드 실행이 보장되는 경우 더 높은 target을 설정하도록 선택할 수 있습니다.
+ex) 화살표 함수() => this는 ES5 이하이면 함수 표현식으로 바뀝니다.
+
+특별한 ESNext 값은 TypeScript 버전이 지원하는 가장 높은 버전을 나타냅니다. 이 설정은 다른 TypeScript 버전 간에 동일한 의미가 아니며 업그레이드를 예측하기 어렵게 만들 수 있으므로 주의해서 사용해야 합니다.
+https://www.typescriptlang.org/tsconfig#target
+
+"build": "tsc" 또는 "npx tsc"
+
+
+
+- lib
+
+타입스크립트에게 어떤 API를 사용하고 어떤 환경에서 코드를 실행하는 지를 지정할 수 있습니다. 예를 들어 ts파일에 localStorage.getItem()를 쓰면 타입스트립트가 알아서 추측할 수 있어. getItem(key: string): string | null 이렇게 
+
+Math.ceil()를 쓰면 ceil(x: number): number 이렇게 알려줘. (이게 가능한 이유는 lib.d.ts파일에 누군가가 이미 해당 함수에 대해 무엇을 return할지 타입스크립트로 써두었기 때문이지) 
+
+(target 런타임 환경이 무엇인지를 지정합니다.)
+프로그램이 브라우저에서 실행되면 lib에 "DOM" 유형 정의를 할 수 있습니다.
+DOM: window, document 등
+ex) "lib": ["ES6","DOM"]
+
+https://www.typescriptlang.org/tsconfig#lib
+
+
+
+
+
+- strict:true 
+
+모든 엄격한 타입 검사 옵션을 활성화합니다.
+strict 플래그는 프로그램 정확성을 더 강력하게 보장하는 광범위한 타입 검사 동작을 가능하게 합니다.
+
+https://www.typescriptlang.org/tsconfig#strict
+
+
+- .js파일에 다음과 같이 타입을 설명할 수도 있어. 
+```
+/**
+ * 
+ * @param {object} config 
+ * @param {boolean} config.debug 
+ * @param {string} config.url 
+ * @returns {boolean}
+ */
+export function init(config){
+  return true;
+}
+/**
+ * 
+ * @param {number} code 
+ * @returns {number}
+ */
+export function exit(code){
+  return code +1;
+}
+```
+
+
+
+- DefinitelyTyped
+TypeScript type 정의를 위한 리포지토리입니다.
+https://github.com/DefinitelyTyped/DefinitelyTyped
